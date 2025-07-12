@@ -1,0 +1,42 @@
+/* ActionDropdown.css */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dots-button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 100px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-item:hover {
+  background-color: #d26868;
+}
+
+.edit-item:hover {
+  background-color: #4c7ea9;
+}
