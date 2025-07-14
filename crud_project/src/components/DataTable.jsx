@@ -151,7 +151,7 @@ const DataTable = () => {
     CTR_REMARKS: false,
   });
   const [showColumnMenu, setShowColumnMenu] = useState(false);
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [columnFilters, setColumnFilters] = useState([]);
   const [data, setData] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
 
@@ -186,10 +186,11 @@ const DataTable = () => {
 
   const handleSaveEdit = async (updatedRow) => {
     try {
-      const res = await axios.put(`/data/${updatedRow.ORDER_NO}`, updatedRow);
+      const res = await axios.put(`/data/${updatedRow.ORDER_NO}/${updatedRow.ITEM_NO}`, updatedRow);
       setData((prev) =>
         prev.map((row) =>
-          row.ORDER_NO === updatedRow.ORDER_NO ? res.data : row
+          row.ORDER_NO === updatedRow.ORDER_NO &&
+        row.ITEM_NO === updatedRow.ITEM_NO? res.data : row
         )
       );
     } catch (err) {
@@ -199,8 +200,8 @@ const DataTable = () => {
 
   const handleDelete = async (orderNo) => {
     try {
-      const res = await axios.delete(`/data/${orderNo}`);
-      setData((prev) => prev.filter((row) => row.ORDER_NO !== orderNo));
+      const res = await axios.delete(`/data/${orderNo}/${itemNo}`);
+      setData((prev) => prev.filter((row) => row.ORDER_NO !== orderNo && row.ITEM_NO === itemNo));
     } catch (err) {
       console.log("Error deleting data", err);
     }
@@ -212,15 +213,15 @@ const DataTable = () => {
     columns: columns,
     state: {
       columnVisibility,
-      globalFilter,
+      columnFilters,
     },
     onColumnVisibilityChange: setcolumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
 
-    onGlobalFilterChange: setGlobalFilter,
+    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    getRowId: (row) => row.ORDER_NO,
+    getRowId: (row) => `${row.ORDER_NO}-${row.ITEM_NO}`,
 
     initialState: {
       pagination: {
@@ -235,9 +236,9 @@ const DataTable = () => {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search..."
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder="Search for ORDER_NO..."
+            value={table.getColumn("ORDER_NO")?.getFilterValue() ?? ""}
+            onChange={(e) => table.getColumn("ORDER_NO")?.setFilterValue(e.target.value)}
           />
         </div>
         <div className="column-dropdown-wrapper ">

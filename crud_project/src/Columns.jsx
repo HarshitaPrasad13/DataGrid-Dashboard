@@ -8,7 +8,7 @@ export const getColumns =(handleEdit, handleDelete)=> [
     cell: ({ row }) => (
       <ActionDropdown
         onEdit={() => handleEdit(row.original)}
-        onDelete={() => handleDelete(row.original.ORDER_NO)}
+        onDelete={() => handleDelete(row.original.ORDER_NO, row.original.ITEM_NO)}
       />
     ),
     enableHiding: false,

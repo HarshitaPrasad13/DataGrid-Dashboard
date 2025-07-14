@@ -10,7 +10,7 @@ const fieldLabels = {
   CUSTNO: { label: "Custno" },
   CUSTOMER: { label: "Customer" },
   ORDER_NO: { label: "Order No", required: true },
-  ITEM_NO: { label: "Item No" },
+  ITEM_NO: { label: "Item No",required: true },
   MATL_NO: { label: "Matl No" },
   DESCRIPTION: { label: "Description" },
   FINPO: { label: "Finpo" },
