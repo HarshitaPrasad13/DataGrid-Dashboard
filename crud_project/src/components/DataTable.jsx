@@ -198,7 +198,7 @@ const DataTable = () => {
     }
   };
 
-  const handleDelete = async (orderNo) => {
+  const handleDelete = async (orderNo, itemNo) => {
     try {
       const res = await axios.delete(`/data/${orderNo}/${itemNo}`);
       setData((prev) => prev.filter((row) => row.ORDER_NO !== orderNo && row.ITEM_NO === itemNo));

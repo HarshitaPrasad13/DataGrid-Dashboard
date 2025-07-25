@@ -2,11 +2,36 @@ const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
 const path = require("path");
+require("dotenv").config();
+const mongoose = require("mongoose");
+const authRoutes= require('./routes/auth.js');
+const cookieParser = require("cookie-parser");
+
+
 
 const app = express();
+
+const allowedOrigins = [
+  "http://localhost:5173", // local dev
+  process.env.FRONTEND_URL, // production
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS: " + origin));
+    }
+  },
+  credentials: true,
+}));
+
+
+app.use(cookieParser());
 const PORT = process.env.PORT || 5000;
 const filePath = path.join(__dirname, "/data.json");
-app.use(cors());
+
 app.use(express.json());
 
 app.get("/api/data", (req, res) => {
@@ -73,6 +98,12 @@ app.delete("/api/data/:orderNo",(req,res)=>{
     res.status(500).send("Error deleting data");
   }
 });
+
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log("MongoDB connected"))
+.catch((err) => console.error("MongoDB error:", err));
+
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

@@ -31,8 +31,9 @@ server/node_modules/
 crud_project/dist/
 
 # === Environment variables ===
-*.env
-.env.local
+# Ignore all env files in any folder
+**/.env*
+
 
 # === Logs ===
 npm-debug.log*
